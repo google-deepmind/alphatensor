@@ -34,7 +34,7 @@ def block_split(matrix: jnp.ndarray, n_rows: int, n_cols: int) -> BlockMatrix:
 
 
 def get_matrix_multiplication_tensor(n: int) -> np.ndarray:
-  """Returns the matrix multiplication tensor T_n = <n, n, n>.
+  """Returns the matrix multiplication tensor T_n.
 
   For n >= 1, T_n is a 3D tensor of shape [n*n, n*n, n*n] representing
   - the bilinear operation (A, B) -> (AB)^T where A, B are two [n, n] matrices,
@@ -44,7 +44,7 @@ def get_matrix_multiplication_tensor(n: int) -> np.ndarray:
   Args:
     n: Size of the matrix multiplication tensor to be returned.
   Returns:
-    NumPy array of shape [n^2, n^2, n^2] representing the tensor <n, n, n>.
+    NumPy array of shape [n^2, n^2, n^2] representing the tensor T_n.
   """
   result = np.full((n ** 2, n ** 2, n ** 2), 0, dtype=np.int32)
   for i in range(n):
@@ -73,8 +73,8 @@ def algorithm_from_factors(
   factors[0] = factors[0].reshape(n, n, rank)
   factors[1] = factors[1].reshape(n, n, rank)
   factors[2] = factors[2].reshape(n, n, rank)
-  # The factors are for the transposed matrix multiplication tensor. So to
-  # use the factors, we need to transpose back.
+  # The factors are for the transposed (symmetrized) matrix multiplication
+  # tensor. So to use the factors, we need to transpose back.
   factors[2] = factors[2].transpose(1, 0, 2)
 
   def f(a: BlockMatrix, b: BlockMatrix) -> BlockMatrix:
@@ -160,8 +160,6 @@ def _get_baseline_op(matrix_dims: Tuple[int, int, int],
   full_a, full_b = _generate_random_matrices(matrix_dims, seed=seed)
   full_a, full_b = _device_put(full_a, full_b, dtype=dtype)
 
-  # TODO(matejb): Why no `jax.jit` around `jnp.dot`?
-
   def _vanilla_single_timing() -> None:
     c = full_b
     for _ in range(n_repeat):
@@ -216,7 +214,7 @@ def benchmark_jnp_dot(matrix_dims: Tuple[int, int, int],
                       dtype: jnp.dtype = jnp.float32,
                       average: int = 20,
                       seed: int = 42) -> np.ndarray:
-  """Benchmark jnp.dot."""
+  """Benchmarks `jnp.dot`."""
   baseline_op = _get_baseline_op(matrix_dims, dtype, average, seed)
   timings = _benchmark_op(baseline_op, num_trials)
   return np.array(timings) / average
@@ -228,7 +226,7 @@ def benchmark_factorized_algorithm(factors: np.ndarray,
                                    dtype: jnp.dtype = jnp.float32,
                                    average: int = 20,
                                    seed: int = 42) -> np.ndarray:
-  """Benchmark a fast-matrix-multiplication algorithm."""
+  """Benchmarks the fast matrix multiplication algorithm given by `factors`."""
   factorization_algorithm_op = _get_factorization_op(
       factors, matrix_dims, dtype, average, seed)
   timings = _benchmark_op(factorization_algorithm_op, num_trials)

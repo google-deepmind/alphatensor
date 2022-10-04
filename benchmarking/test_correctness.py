@@ -45,16 +45,16 @@ class MatrixMultiplicationCorrectnessTest(unittest.TestCase):
     np.testing.assert_array_equal(reconstructed_tensor, expected_tensor)
 
   def testGPUMatrixMultiplicationPrecision(self):
-    """Compare direct multiplication A @ B against using the proposed algorithm.
+    """Compares standard multiplication against using the proposed algorithm.
 
     Compare the result of multiplying two matrices via jnp.dot vs via the
-    proposed fast algorithm (up to some precision).
+    proposed fast algorithm (up to numerical precision).
     """
     config.update('jax_enable_x64', True)
     factors = factorizations.get_4x4x4_alphatensor_gpu()
     matrix_multiplication_algorithm = utils.algorithm_from_factors(factors)
 
-    # Generate the matrices.
+    # Generate the matrices to be multiplied.
     rng1, rng2 = jax.random.split(jax.random.PRNGKey(42))
     full_a = jax.random.uniform(rng1, (1024, 1024), dtype=jnp.float64)
     full_b = jax.random.uniform(rng2, (1024, 1024), dtype=jnp.float64)

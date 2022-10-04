@@ -19,14 +19,16 @@ import numpy as np
 
 
 def get_4x4x4_alphatensor_gpu() -> np.ndarray:
-  """Returns a factorization for fast matrix multiplication on V100 GPUs.
+  """Returns a factorization for fast matrix multiplication on NVIDIA V100 GPUs.
 
   This factorization was discovered by AlphaTensor while optimizing for the
-  runtime of multiplying two 8192 x 8192 matrices on a V100 GPU in `float32`.
+  runtime of multiplying two 8192 x 8192 matrices on an NVIDIA V100 GPU in
+  `float32`.
 
   Returns:
-    [3, 16, 49]-shaped array representing a rank-49 factorization of the matrix
-    multiplication tensor T_4 = <4, 4, 4>.
+    [3, 16, 49]-shaped array representing a rank-49 factorization of the
+    (symmetrized version of the) matrix multiplication tensor T_4 = <4, 4, 4>
+    in standard arithmetic.
   """
   u = np.array([
       [-1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
@@ -185,8 +187,9 @@ def get_4x4x4_alphatensor_tpu() -> np.ndarray:
   runtime of multiplying two 8192 x 8192 matrices on a TPUv2 in `bfloat16`.
 
   Returns:
-    [3, 16, 49]-shaped array representing a rank-49 factorization of the matrix
-    multiplication tensor T_4 = <4, 4, 4>.
+    [3, 16, 49]-shaped array representing a rank-49 factorization of the
+    (symmetrized version of the) matrix multiplication tensor T_4 = <4, 4, 4>
+    in standard arithmetic.
   """
   u = np.array([
       [1, 1, 0, 0, 0, 1, -1, 1, -1, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
@@ -364,7 +367,7 @@ def _product_factors(factors1: np.ndarray, factors2: np.ndarray) -> np.ndarray:
   Returns:
     [3, n1**2 * n2 ** 2, R1 * R2] factorization of the Kronecker square tensor
     Reshape(kron(RT1, RT2)), where `RT1` and `RT2` are the reshapes of T1 and T2
-    into 6-dimensional tensors, and `Reshape` reshapes back the tensor into a
+    into 6-dimensional tensors, and `Reshape` reshapes the tensor back into a
     3-dimensional one.
   """
   _, side1, rank1 = np.shape(factors1)
@@ -384,6 +387,15 @@ def _product_factors(factors1: np.ndarray, factors2: np.ndarray) -> np.ndarray:
 
 
 def get_4x4x4_strassen_squared() -> np.ndarray:
-  """Returns [3, 16, 49] array, a rank-49 factorization of the tensor T_4."""
+  """Returns Strassen^2 factorization for fast multiplication of 4x4 matrices.
+
+  This factorization is obtained by squaring (recursively applying twice)
+  Strassen's rank-7 factorization of T_2.
+
+  Returns:
+    [3, 16, 49]-shaped array representing a rank-49 factorization of the
+    (symmetrized version of the) matrix multiplication tensor T_4 = <4, 4, 4>
+    in standard arithmetic.
+  """
   strassen = _get_2x2x2_strassen()  # [3, 4, 7]
   return _product_factors(strassen, strassen)  # [3, 16, 49]

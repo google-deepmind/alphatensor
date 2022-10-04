@@ -13,7 +13,7 @@
 # limitations under the License.
 # ==============================================================================
 
-"""Example of using recombination to find rank 255 for <4, 9, 10>."""
+"""Example of using recombination to find rank 255 for T_{4, 9, 10}."""
 
 from typing import Sequence, Tuple
 

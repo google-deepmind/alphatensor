@@ -27,9 +27,9 @@ benchmarking variance).
 Ideally this code should be run on a server that is not used by others at the
 same time to remove interference.
 
-The code is tested on n1-standard-96 Google Cloud VM instance with 8 V100 GPUs
-and Intel Skylake CPU with "TensorFlow Enterprise 2.9 (CUDA 11.3)" image with
-Jax installed by running the following command:
+The code was tested on an n1-standard-96 Google Cloud VM instance with eight
+V100 GPUs, Intel Skylake CPU, using the "TensorFlow Enterprise 2.9 (CUDA 11.3)"
+image, and with Jax installed by running the following commands:
 ```bash
 pip install --upgrade pip
 pip install --upgrade "jax[cuda]" \
@@ -84,7 +84,7 @@ def main():
           factorization, (s, s, s), num_trials=num_trials)
       ratio = np.median(results_dot / results_algorithm)
       improvement = 100 * ratio - 100
-      print('%s vs `jnp.dot`: %0.2f%% speedup' % algorithm_name, improvement)
+      print('%s vs `jnp.dot`: %0.2f%% speedup' % (algorithm_name, improvement))
 
     print('\n\n')
 
