@@ -1,0 +1,62 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mo fence="false" stretchy="false">{</mo>
+      <mo stretchy="false">(</mo>
+      <msup>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mrow class="MJX-TeXAtom-ORD">
+              <mi mathvariant="bold">u</mi>
+            </mrow>
+          </mrow>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mo stretchy="false">(</mo>
+          <mi>r</mi>
+          <mo stretchy="false">)</mo>
+        </mrow>
+      </msup>
+      <mo>,</mo>
+      <msup>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mrow class="MJX-TeXAtom-ORD">
+              <mi mathvariant="bold">v</mi>
+            </mrow>
+          </mrow>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mo stretchy="false">(</mo>
+          <mi>r</mi>
+          <mo stretchy="false">)</mo>
+        </mrow>
+      </msup>
+      <mo>,</mo>
+      <msup>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mrow class="MJX-TeXAtom-ORD">
+              <mi mathvariant="bold">w</mi>
+            </mrow>
+          </mrow>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mo stretchy="false">(</mo>
+          <mi>r</mi>
+          <mo stretchy="false">)</mo>
+        </mrow>
+      </msup>
+      <mo stretchy="false">)</mo>
+      <mo fence="false" stretchy="false">}</mo>
+    </mrow>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mi>r</mi>
+      <mo>=</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mi>R</mi>
+    </mrow>
+  </msubsup>
+</math>
