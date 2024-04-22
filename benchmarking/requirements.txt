@@ -3,4 +3,4 @@ dm-tree==0.1.7
 jax==0.3.15
 jaxlib==0.3.15+cuda11.cudnn82
 numpy==1.21.6
-scipy==1.7.3
+scipy==1.11.1
